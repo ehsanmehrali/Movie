@@ -1,7 +1,11 @@
 # Built-in
 import sys
+import random
+
 
 # Third-party
+from fuzzywuzzy import process
+from matplotlib import pyplot as plt
 
 # Local
 from data_managers.load_json import read_json, write_json
@@ -9,7 +13,7 @@ from data_managers.load_json import read_json, write_json
 
 def show_all_movies():
     """ Read """
-    print("********** Show movies **********")
+    print("========== Show movies ==========")
     movies = read_json()
 
     print(f"There is {len(movies)} movies in total: ")
@@ -25,7 +29,7 @@ def title_case_and_exceptions(text):
 def add_movie():
     """ Write """
     try:
-        print("********** Add movies **********")
+        print("=========== Add movies ==========")
         new_movie_name = input("Enter new movie name: ")
 
         if new_movie_name:
@@ -60,7 +64,7 @@ def add_movie():
 
 def delete_movie():
     """ Delete """
-    print("********** Delete movies **********")
+    print("========= Delete movies =========")
     movie_to_delete = input("Enter movie name to delete: ")
 
     if movie_to_delete:
@@ -74,9 +78,10 @@ def delete_movie():
         else:
             print(f'The movie "{movie_to_delete}" does not exists!')
 
+
 def update_movie():
     """ Update """
-    print("********** Update movies **********")
+    print("========= Update movies =========")
     try:
         movie_to_update = input("Enter movie name: ")
 
@@ -104,9 +109,10 @@ def update_movie():
         print("\nBye!")
         exit()
 
+
 def show_statistics():
     """ Statistics """
-    print("********** State **********")
+    print("============= State =============")
     movies = read_json()
     ratings = list(movies.values())
     sorted_ratings = sorted(ratings)
@@ -130,39 +136,85 @@ def show_statistics():
     print(f"Worst movie: {worst_movie}, {movies[worst_movie]}")
 
 
-
 def random_movie():
     """ Recommended movie """
-    pass
+    print("======= Recommended movie =======")
+    movies = read_json()
+    movie, rating = random.choice(list(movies.items()))
+    print(f"Your movie for tonight: \n{movie}, it's rated {rating}")
+
+
+def show_search_res(matched_name, partial_matched_names, searched_name):
+    if matched_name :
+        print("Exact match found!")
+        print(f"{matched_name}")
+    elif partial_matched_names:
+        print(f"The movie {searched_name} not found!")
+        print("Do you mean: ")
+        for i, movie in enumerate(partial_matched_names):
+            print(f"{i + 1}- {movie}")
+    else:
+        print(f"No results found for '{searched_name}'")
+
 
 def search_movie():
     """ Search """
-    pass
+    print("============ Search =============")
+    searched_movie = input("Enter a part of movie name: ")
+
+    if searched_movie:
+        movies = read_json()
+        searched_movie = title_case_and_exceptions(searched_movie)
+        movie_names = list(movies.keys())
+
+        ratios = process.extract(searched_movie, movie_names)
+        highest = process.extractOne(searched_movie, movie_names)
+
+        matched_movie = ""
+        partial_matched_movies = []
+
+        for each_ratio in ratios:
+            if 92 <= each_ratio[1] <= 100:
+                matched_movie = highest[0]
+            elif 80 <= each_ratio[1] < 92:
+                partial_matched_movies.append(each_ratio[0])
+
+        show_search_res(matched_movie, partial_matched_movies, searched_movie)
 
 
 def sort_movies():
     """ Sorting movies based on rating """
-    pass
+    print("========= Sorted Movies =========")
+    movies = read_json()
+    sorted_movies_descending = dict(sorted(movies.items(), key=lambda item: item[1], reverse=True))
+    print("By rating in Descending order: ")
+    for movie, rate in sorted_movies_descending.items():
+        print(f"{movie}: {rate}")
 
 
 def build_histogram():
     """ Histogram """
-    pass
+    movies = read_json()
+    movies_rating_list = movies.values()
+    plt.hist(movies_rating_list, bins=10)
+    plt.show()
 
 def show_menu(items):
     """ Show menu items """
     while True:
-        print("Menu: ")
+        print("============== Menu =============")
         for key, (desc, _) in items.items():
             print(f"{key}. {desc}")
 
         try:
-            choice = int(input("\nSelect from the menu (1-9): "))
-            print()
+            print("=================================")
+            choice = int(input("Select from the menu (1-9): "))
+            print("=================================")
 
             if choice in items:
                 items[choice][1]()
-                input("\nPress enter to continue: ")
+                print("=================================")
+                input("Press enter to continue: ")
             else:
                 print("Invalid option!\n")
 
@@ -196,7 +248,7 @@ def menu_items():
 
 def main():
     print(
-        "********************** My Movies Database **********************\n")
+        "******* My Movies Database *******")
     menu_items()
 
 if __name__ == '__main__':

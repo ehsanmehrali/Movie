@@ -2,8 +2,8 @@
 import json
 import os
 
-BASE_DIRECTORY = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-FILE_PATH = os.path.join(BASE_DIRECTORY, "data", "movies.json")
+ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+FILE_PATH = os.path.join(ROOT_DIRECTORY, "data", "movies.json")
 
 def read_json():
     with open(FILE_PATH, "r", encoding="UTF-8") as handle:

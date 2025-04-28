@@ -9,18 +9,11 @@ from fuzzywuzzy import process
 from matplotlib import pyplot as plt
 
 # Local
+from core.show_all_movies import show_all_movies
 from core.add_movie import add_movie
 from data_managers.load_json import read_json, write_json
 
 
-def show_all_movies():
-    """ Read """
-    print("========== Show movies ==========")
-    movies = read_json()
-
-    print(f"There is {len(movies)} movies in total: ")
-    for i, (name, movie_info) in enumerate(movies.items(),1):
-        print(f"{i}- {name} ({movie_info["year"]}): {movie_info["rate"]}")
 
 
 def title_case_and_exceptions(text):

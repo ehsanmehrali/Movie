@@ -56,7 +56,6 @@ def add_movie():
         new_movie_rate = get_movie_rate()
         if new_movie_rate is None:
             return
-
         new_movie_year = get_movie_year()
         if new_movie_year is None:
             return
@@ -64,6 +63,7 @@ def add_movie():
         movies[new_movie_name] = {"rate": new_movie_rate, "year": new_movie_year}
         write_json(movies)
         print(f'The movie "{new_movie_name} ({new_movie_year})" with a rating of {new_movie_rate} was successfully added.')
+
     except ValueError as e:
         print(e)
     except KeyboardInterrupt:

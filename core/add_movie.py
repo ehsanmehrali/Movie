@@ -7,7 +7,7 @@ from utils.text_utils import title_case_and_exceptions
 from utils.validators import validate_rate, validate_year
 
 
-def get_movie_name(new=" new "):
+def get_movie_name(new=' new '):
     name = input(f"Enter{new}movie name: ")
     if not name:
         raise ValueError("Empty movie name.")

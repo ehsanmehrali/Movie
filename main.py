@@ -1,11 +1,8 @@
 # Built-in
 import sys
-import random
-import math
-from datetime import datetime
 
 # Third-party
-from fuzzywuzzy import process
+
 from matplotlib import pyplot as plt
 
 # Local
@@ -15,51 +12,13 @@ from core.delete_movie import delete_movie
 from core.update_movie import update_movie
 from core.show_statistics import show_statistics
 from core.random_movie import random_movie
-from data_managers.load_json import read_json, write_json
+from core.search_movie import search_movie
+from data_managers.load_json import read_json
 
 
 def title_case_and_exceptions(text):
     exception_words = ["the", "a", "an", "and", "but", "or", "for", "nor", "in", "on", "at", "by", "of", "to", "up", "via"]
     return " ".join([word.capitalize() if word not in exception_words else word.lower() for word in text.split()])
-
-
-def show_search_res(matched_name, partial_matched_names, searched_name):
-    movies = read_json()
-    if matched_name :
-        print("Exact match found!")
-        print(f"{matched_name}, it's rated {movies[matched_name]['rate']}")
-    elif partial_matched_names:
-        print(f"The movie {searched_name} not found!")
-        print("Do you mean: ")
-        for i, movie in enumerate(partial_matched_names):
-            print(f"{i + 1}- {movie}")
-    else:
-        print(f"No results found for '{searched_name}'")
-
-
-def search_movie():
-    """ Search """
-    print("============ Search =============")
-    searched_movie = input("Enter a part of movie name: ")
-
-    if searched_movie:
-        movies = read_json()
-        searched_movie = title_case_and_exceptions(searched_movie)
-        movie_names = list(movies.keys())
-
-        ratios = process.extract(searched_movie, movie_names)
-        highest = process.extractOne(searched_movie, movie_names)
-
-        matched_movie = ""
-        partial_matched_movies = []
-
-        for each_ratio in ratios:
-            if 92 <= each_ratio[1] <= 100:
-                matched_movie = highest[0]
-            elif 80 <= each_ratio[1] < 92:
-                partial_matched_movies.append(each_ratio[0])
-
-        show_search_res(matched_movie, partial_matched_movies, searched_movie)
 
 
 def sort_movies():

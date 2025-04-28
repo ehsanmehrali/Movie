@@ -1,9 +1,6 @@
 # Built-in
 import sys
 
-# Third-party
-from matplotlib import pyplot as plt
-
 # Local
 from core.show_all_movies import show_all_movies
 from core.add_movie import add_movie
@@ -13,15 +10,7 @@ from core.show_statistics import show_statistics
 from core.random_movie import random_movie
 from core.search_movie import search_movie
 from core.sort_movies import sort_movies
-from data_managers.load_json import read_json
-
-
-def build_histogram():
-    """ Histogram """
-    movies = read_json()
-    movies_rating_list = [item["rate"] for item in movies.values()]
-    plt.hist(movies_rating_list, bins=10)
-    plt.show()
+from core.build_histogram import build_histogram
 
 
 def show_menu(items):
@@ -79,5 +68,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# structure of data in json file was edited!!

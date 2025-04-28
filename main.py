@@ -2,7 +2,6 @@
 import sys
 
 # Third-party
-
 from matplotlib import pyplot as plt
 
 # Local
@@ -13,22 +12,8 @@ from core.update_movie import update_movie
 from core.show_statistics import show_statistics
 from core.random_movie import random_movie
 from core.search_movie import search_movie
+from core.sort_movies import sort_movies
 from data_managers.load_json import read_json
-
-
-def title_case_and_exceptions(text):
-    exception_words = ["the", "a", "an", "and", "but", "or", "for", "nor", "in", "on", "at", "by", "of", "to", "up", "via"]
-    return " ".join([word.capitalize() if word not in exception_words else word.lower() for word in text.split()])
-
-
-def sort_movies():
-    """ Sorting movies based on rating """
-    print("========= Sorted Movies =========")
-    movies = read_json()
-    sorted_movies_descending = dict(sorted(movies.items(), key=lambda item: item[1]["rate"], reverse=True))
-    print("By rating in Descending order: ")
-    for movie, rate_obj in sorted_movies_descending.items():
-        print(f"{movie}: {rate_obj['rate']}")
 
 
 def build_histogram():

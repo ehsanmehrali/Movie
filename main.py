@@ -1,7 +1,7 @@
 # Built-in
 import sys
 import random
-
+import math
 
 # Third-party
 from fuzzywuzzy import process
@@ -17,8 +17,8 @@ def show_all_movies():
     movies = read_json()
 
     print(f"There is {len(movies)} movies in total: ")
-    for i, (name, rate) in enumerate(movies.items(),1):
-        print(f"{i}- {name} : {rate}")
+    for i, (name, movie_info) in enumerate(movies.items(),1):
+        print(f"{i}- {name} : {movie_info["rate"]}")
 
 
 def title_case_and_exceptions(text):
@@ -39,9 +39,9 @@ def add_movie():
             if new_movie_name not in movies:
 
                 while True:
-                    new_movie_rate = float(input(f"Enter {new_movie_name} rating (1-10): "))
+                    new_movie_rate = math.trunc(float(input(f"Enter {new_movie_name} rating (1-10): ")) * 10) / 10
                     if 1 <= new_movie_rate <= 10:
-                        movies[new_movie_name] = new_movie_rate
+                        movies[new_movie_name] = {"rate" : new_movie_rate}
                         write_json(movies)
                         print(f'The movie "{new_movie_name}" with a rating of {new_movie_rate} was successfully added.')
                         break
@@ -90,10 +90,10 @@ def update_movie():
             movie_to_update = title_case_and_exceptions(movie_to_update)
 
             if movie_to_update in movies:
-                new_rate = float(input("Enter new rating (0-10): "))
+                new_rate = math.trunc(float(input("Enter new rating (0-10): ")) * 10) / 10
 
                 if 0 < new_rate <= 10:
-                    movies[movie_to_update] = new_rate
+                    movies[movie_to_update]["rate"] = new_rate
                     write_json(movies)
                     print(f"The movie '{movie_to_update}' with a new rating of {new_rate} has been updated.")
                 else:
@@ -114,7 +114,7 @@ def show_statistics():
     """ Statistics """
     print("============= State =============")
     movies = read_json()
-    ratings = list(movies.values())
+    ratings =[item["rate"] for item in list(movies.values())]
     sorted_ratings = sorted(ratings)
 
     # Avr rating
@@ -127,27 +127,29 @@ def show_statistics():
     else:
         median_rating = (sorted_ratings[middle - 1] + sorted_ratings[middle]) / 2
     # Best and worst movies
-    best_movie = max(movies, key=movies.get)
-    worst_movie = min(movies, key=movies.get)
+
+    best_movie, max_rate_obj = max(movies.items(), key=lambda item: item[1]['rate'])
+    worst_movie, min_rate_obj = min(movies.items(), key=lambda item: item[1]['rate'])
 
     print(f"Average rating: {average_rate:.1f}")
     print(f"Median rating: {median_rating:.1f}")
-    print(f"Best movie: {best_movie}, {movies[best_movie]}")
-    print(f"Worst movie: {worst_movie}, {movies[worst_movie]}")
+    print(f"Best movie: {best_movie}, {max_rate_obj["rate"]}")
+    print(f"Worst movie: {worst_movie}, {min_rate_obj["rate"]}")
 
 
 def random_movie():
     """ Recommended movie """
     print("======= Recommended movie =======")
     movies = read_json()
-    movie, rating = random.choice(list(movies.items()))
-    print(f"Your movie for tonight: \n{movie}, it's rated {rating}")
+    movie, rating_obj = random.choice(list(movies.items()))
+    print(f"Your movie for tonight: \n{movie}, it's rated {rating_obj["rate"]}")
 
 
 def show_search_res(matched_name, partial_matched_names, searched_name):
+    movies = read_json()
     if matched_name :
         print("Exact match found!")
-        print(f"{matched_name}")
+        print(f"{matched_name}, it's rated {movies[matched_name]['rate']}")
     elif partial_matched_names:
         print(f"The movie {searched_name} not found!")
         print("Do you mean: ")
@@ -186,34 +188,36 @@ def sort_movies():
     """ Sorting movies based on rating """
     print("========= Sorted Movies =========")
     movies = read_json()
-    sorted_movies_descending = dict(sorted(movies.items(), key=lambda item: item[1], reverse=True))
+    sorted_movies_descending = dict(sorted(movies.items(), key=lambda item: item[1]["rate"], reverse=True))
     print("By rating in Descending order: ")
-    for movie, rate in sorted_movies_descending.items():
-        print(f"{movie}: {rate}")
+    for movie, rate_obj in sorted_movies_descending.items():
+        print(f"{movie}: {rate_obj['rate']}")
 
 
 def build_histogram():
     """ Histogram """
     movies = read_json()
-    movies_rating_list = movies.values()
+    movies_rating_list = [item["rate"] for item in movies.values()]
     plt.hist(movies_rating_list, bins=10)
     plt.show()
 
+
 def show_menu(items):
     """ Show menu items """
+    divider = "================================="
     while True:
         print("============== Menu =============")
         for key, (desc, _) in items.items():
             print(f"{key}. {desc}")
 
         try:
-            print("=================================")
+            print(divider)
             choice = int(input("Select from the menu (1-9): "))
-            print("=================================")
+            print(divider)
 
             if choice in items:
                 items[choice][1]()
-                print("=================================")
+                print(divider)
                 input("Press enter to continue: ")
             else:
                 print("Invalid option!\n")
@@ -245,11 +249,13 @@ def menu_items():
     show_menu(options)
 
 
-
 def main():
     print(
         "******* My Movies Database *******")
     menu_items()
 
+
 if __name__ == '__main__':
     main()
+
+# structure of data in json file was edited!!

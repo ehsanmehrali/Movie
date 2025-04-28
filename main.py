@@ -12,6 +12,7 @@ from matplotlib import pyplot as plt
 from core.show_all_movies import show_all_movies
 from core.add_movie import add_movie
 from core.delete_movie import delete_movie
+from core.update_movie import update_movie
 from data_managers.load_json import read_json, write_json
 
 
@@ -22,35 +23,7 @@ def title_case_and_exceptions(text):
     return " ".join([word.capitalize() if word not in exception_words else word.lower() for word in text.split()])
 
 
-def update_movie():
-    """ Update """
-    print("========= Update movies =========")
-    try:
-        movie_to_update = input("Enter movie name: ")
 
-        if movie_to_update:
-            movies = read_json()
-            movie_to_update = title_case_and_exceptions(movie_to_update)
-
-            if movie_to_update in movies:
-                new_rate = math.trunc(float(input("Enter new rating (0-10): ")) * 10) / 10
-
-                if 0 < new_rate <= 10:
-                    movies[movie_to_update]["rate"] = new_rate
-                    write_json(movies)
-                    print(f"The movie '{movie_to_update}' with a new rating of {new_rate} has been updated.")
-                else:
-                    print("Out of Range(1-10)!")
-
-            else:
-                print(f"The movie '{movie_to_update}' does not exists!")
-
-    except ValueError:
-        print("Invalid input!")
-        print("Please Try again")
-    except KeyboardInterrupt:
-        print("\nBye!")
-        exit()
 
 
 def show_statistics():

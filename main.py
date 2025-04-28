@@ -13,6 +13,7 @@ from core.show_all_movies import show_all_movies
 from core.add_movie import add_movie
 from core.delete_movie import delete_movie
 from core.update_movie import update_movie
+from core.show_statistics import show_statistics
 from data_managers.load_json import read_json, write_json
 
 
@@ -21,36 +22,6 @@ from data_managers.load_json import read_json, write_json
 def title_case_and_exceptions(text):
     exception_words = ["the", "a", "an", "and", "but", "or", "for", "nor", "in", "on", "at", "by", "of", "to", "up", "via"]
     return " ".join([word.capitalize() if word not in exception_words else word.lower() for word in text.split()])
-
-
-
-
-
-def show_statistics():
-    """ Statistics """
-    print("============= State =============")
-    movies = read_json()
-    ratings =[item["rate"] for item in list(movies.values())]
-    sorted_ratings = sorted(ratings)
-
-    # Avr rating
-    average_rate = sum(ratings) / len(ratings)
-
-    # Median rating
-    middle = len(ratings) // 2
-    if len(sorted_ratings) % 2 != 0:
-        median_rating = sorted_ratings[middle]
-    else:
-        median_rating = (sorted_ratings[middle - 1] + sorted_ratings[middle]) / 2
-    # Best and worst movies
-
-    best_movie, max_rate_obj = max(movies.items(), key=lambda item: item[1]['rate'])
-    worst_movie, min_rate_obj = min(movies.items(), key=lambda item: item[1]['rate'])
-
-    print(f"Average rating: {average_rate:.1f}")
-    print(f"Median rating: {median_rating:.1f}")
-    print(f"Best movie: {best_movie}, {max_rate_obj["rate"]}")
-    print(f"Worst movie: {worst_movie}, {min_rate_obj["rate"]}")
 
 
 def random_movie():

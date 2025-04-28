@@ -2,12 +2,14 @@
 import sys
 import random
 import math
+from datetime import datetime
 
 # Third-party
 from fuzzywuzzy import process
 from matplotlib import pyplot as plt
 
 # Local
+from core.add_movie import add_movie
 from data_managers.load_json import read_json, write_json
 
 
@@ -18,7 +20,7 @@ def show_all_movies():
 
     print(f"There is {len(movies)} movies in total: ")
     for i, (name, movie_info) in enumerate(movies.items(),1):
-        print(f"{i}- {name} : {movie_info["rate"]}")
+        print(f"{i}- {name} ({movie_info["year"]}): {movie_info["rate"]}")
 
 
 def title_case_and_exceptions(text):
@@ -26,40 +28,7 @@ def title_case_and_exceptions(text):
     return " ".join([word.capitalize() if word not in exception_words else word.lower() for word in text.split()])
 
 
-def add_movie():
-    """ Write """
-    try:
-        print("=========== Add movies ==========")
-        new_movie_name = input("Enter new movie name: ")
 
-        if new_movie_name:
-            new_movie_name = title_case_and_exceptions(new_movie_name)
-            movies = read_json()
-
-            if new_movie_name not in movies:
-
-                while True:
-                    new_movie_rate = math.trunc(float(input(f"Enter {new_movie_name} rating (1-10): ")) * 10) / 10
-                    if 1 <= new_movie_rate <= 10:
-                        movies[new_movie_name] = {"rate" : new_movie_rate}
-                        write_json(movies)
-                        print(f'The movie "{new_movie_name}" with a rating of {new_movie_rate} was successfully added.')
-                        break
-                    else:
-                        print("Out of Range(1-10)!")
-
-            else:
-                print(f'Movie "{new_movie_name}" already exists!')
-
-        else:
-            raise ValueError
-
-    except ValueError:
-        print("Invalid input!")
-        print("Please Try again")
-    except KeyboardInterrupt:
-        print("\nBye!")
-        exit()
 
 
 def delete_movie():

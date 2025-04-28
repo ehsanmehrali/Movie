@@ -14,22 +14,13 @@ from core.add_movie import add_movie
 from core.delete_movie import delete_movie
 from core.update_movie import update_movie
 from core.show_statistics import show_statistics
+from core.random_movie import random_movie
 from data_managers.load_json import read_json, write_json
-
-
 
 
 def title_case_and_exceptions(text):
     exception_words = ["the", "a", "an", "and", "but", "or", "for", "nor", "in", "on", "at", "by", "of", "to", "up", "via"]
     return " ".join([word.capitalize() if word not in exception_words else word.lower() for word in text.split()])
-
-
-def random_movie():
-    """ Recommended movie """
-    print("======= Recommended movie =======")
-    movies = read_json()
-    movie, rating_obj = random.choice(list(movies.items()))
-    print(f"Your movie for tonight: \n{movie}, it's rated {rating_obj["rate"]}")
 
 
 def show_search_res(matched_name, partial_matched_names, searched_name):

@@ -11,6 +11,7 @@ from matplotlib import pyplot as plt
 # Local
 from core.show_all_movies import show_all_movies
 from core.add_movie import add_movie
+from core.delete_movie import delete_movie
 from data_managers.load_json import read_json, write_json
 
 
@@ -19,26 +20,6 @@ from data_managers.load_json import read_json, write_json
 def title_case_and_exceptions(text):
     exception_words = ["the", "a", "an", "and", "but", "or", "for", "nor", "in", "on", "at", "by", "of", "to", "up", "via"]
     return " ".join([word.capitalize() if word not in exception_words else word.lower() for word in text.split()])
-
-
-
-
-
-def delete_movie():
-    """ Delete """
-    print("========= Delete movies =========")
-    movie_to_delete = input("Enter movie name to delete: ")
-
-    if movie_to_delete:
-        movies = read_json()
-        movie_to_delete = title_case_and_exceptions(movie_to_delete)
-
-        if movie_to_delete in movies:
-            movies.pop(movie_to_delete)
-            write_json(movies)
-            print(f"The movie '{movie_to_delete}' was successfully removed.")# The film "Lie" was successfully removed.
-        else:
-            print(f'The movie "{movie_to_delete}" does not exists!')
 
 
 def update_movie():

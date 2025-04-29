@@ -30,7 +30,7 @@ def build_histogram():
 
     plt.savefig("rating_histogram.png")
 
-    # The user can click on the link and view the histogram image in the browser.
+    # The user can click on the link and view the histogram image in the browser(just in my workspace in codio server).
     print("✅ Histogram saved. Open this address to view in browser:")
     print("🔗 https://prosperbagel-cairoradical.codio.io/Movie/rating_histogram.png")
 

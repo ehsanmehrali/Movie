@@ -17,7 +17,8 @@ A comprehensive Python application for managing your movie collection with a com
 - 📊 **Statistics** - View detailed stats including average/median ratings and best/worst movies
 - 🎲 **Random Movie** - Get a random movie recommendation
 - 🔍 **Fuzzy Search** - Find movies using fuzzy matching (with `fuzzywuzzy`)
-- ⭐ **Sorting** - Sort movies by rating (descending)
+- ⭐ **Sorting** - Sort movies by rating or year (ascending or descending)
+- 🪄 **Filtering** - Filter movies by min rate and release year.
 - 📈 **Histogram** - Visualize rating distribution with Matplotlib
 
 ---
@@ -61,18 +62,19 @@ You'll see the interactive menu:
 ```text
 ******* My Movies Database *******
 ============== Menu =============
-0. Exit
-1. List movies
-2. Add movie
-3. Delete movie
-4. Update movie
-5. Stats
-6. Random movie
-7. Search movie
-8. Movies sorted by rating
-9. Create Rating Histogram
+0.  Exit
+1.  List movies
+2.  Add movie
+3.  Delete movie
+4.  Update movie
+5.  Stats
+6.  Random movie
+7.  Search movie
+8.  Sort movies by rating and release year
+9.  Filter movies by rating and release year
+10. Create Rating Histogram
 =================================
-Select from the menu (1-9): 
+Select from the menu (1-10): 
 =================================
 
 ```
@@ -85,6 +87,7 @@ Select from the menu (1-9):
 
 Movies/
 ├── core/
+│   ├── __init__.py
 │   ├── add_movie.py        # Add movies with validation
 │   ├── delete_movie.py     # Remove movies
 │   ├── update_movie.py     # Modify movies
@@ -92,7 +95,8 @@ Movies/
 │   ├── show_statistics.py  # Display stats
 │   ├── random_movie.py     # Random recommendation
 │   ├── search_movie.py     # Fuzzy search
-│   ├── sort_movies.py      # Sort by rating
+│   ├── sort_movies.py      # Sort movies
+│   ├── filter_movies.py    # Filter movies
 │   └── build_histogram.py  # Rating visualization
 ├── data/
 │   └── movies.json         # Movie database
@@ -121,6 +125,7 @@ Add to requirements.txt:
 ```bash
   fuzzywuzzy>=0.18.0
   matplotlib>=3.5.0
+  numpy>=2.2.5
   python-Levenshtein>=0.12.2
 ```
 

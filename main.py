@@ -20,7 +20,8 @@ def show_menu(items):
     while True:
         print("============== Menu =============")
         for key, (desc, _) in items.items():
-            print(f"{key}. {desc}")
+            print(f"{f"{key}.":{''}<3}", f"{desc}")
+
 
         try:
             print(divider)

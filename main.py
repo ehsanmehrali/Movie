@@ -54,7 +54,7 @@ def menu_items():
         5: ("Stats", show_statistics),
         6: ("Random movie", random_movie),
         7: ("Search movie", search_movie),
-        8: ("Movies sorted by rating", sort_movies),
+        8: ("Sort movies by rating and release year", sort_movies),
         9: ("Create Rating Histogram", build_histogram)
     }
     show_menu(options)

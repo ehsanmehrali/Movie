@@ -32,7 +32,7 @@ def build_histogram():
 
     # The user can click on the link and view the histogram image in the browser.
     print("✅ Histogram saved. Open this address to view in browser:")
-    print("🔗 https://commonlithium-privateprague.codio.io/rating_histogram.png")
+    print("🔗 https://prosperbagel-cairoradical.codio.io/Movie/rating_histogram.png")
 
     # plt.hist(movies_rating_list, bins=10)
     # plt.show()

@@ -10,6 +10,7 @@ from core.show_statistics import show_statistics
 from core.random_movie import random_movie
 from core.search_movie import search_movie
 from core.sort_movies import sort_movies
+from core.filter_movies import filter_movies
 from core.build_histogram import build_histogram
 
 
@@ -23,7 +24,7 @@ def show_menu(items):
 
         try:
             print(divider)
-            choice = int(input("Select from the menu (1-9): "))
+            choice = int(input("Select from the menu (1-10): "))
             print(divider)
 
             if choice in items:
@@ -55,7 +56,8 @@ def menu_items():
         6: ("Random movie", random_movie),
         7: ("Search movie", search_movie),
         8: ("Sort movies by rating and release year", sort_movies),
-        9: ("Create Rating Histogram", build_histogram)
+        9: ("Filter movies by rate and release year", filter_movies),
+        10: ("Create Rating Histogram", build_histogram)
     }
     show_menu(options)
 
